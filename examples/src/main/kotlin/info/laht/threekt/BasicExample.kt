@@ -3,7 +3,7 @@ package info.laht.threekt
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.controls.OrbitControls
 import info.laht.threekt.core.Clock
-import info.laht.threekt.core.MaterialObject
+import info.laht.threekt.materials.MaterialProxy
 import info.laht.threekt.core.Raycaster
 import info.laht.threekt.geometries.BoxBufferGeometry
 import info.laht.threekt.geometries.CylinderBufferGeometry
@@ -106,7 +106,7 @@ object BasicExample {
                 raycaster.intersectObjects(scene.children).forEach {
 
                     val obj = it.`object`
-                    if (obj is MaterialObject) {
+                    if (obj is MaterialProxy) {
                         val mat = obj.material
                         if (mat is MaterialWithColor) {
                             mat.color.set(Random.nextFloat(), Random.nextFloat(), Random.nextFloat())

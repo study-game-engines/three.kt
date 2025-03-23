@@ -5,10 +5,11 @@ import info.laht.threekt.materials.SpriteMaterial
 import info.laht.threekt.math.Frustum
 import info.laht.threekt.math.Sphere
 import info.laht.threekt.math.Vector2
+import info.laht.threekt.materials.MaterialProxy
 
 class Sprite(
     override var material: SpriteMaterial = SpriteMaterial()
-) : Object3D(), GeometryObject, MaterialObject {
+) : Object3D(), BufferGeometryProxy, MaterialProxy {
 
     override var geometry = BufferGeometry()
 

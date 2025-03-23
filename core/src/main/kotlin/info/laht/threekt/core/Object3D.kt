@@ -3,6 +3,7 @@ package info.laht.threekt.core
 import info.laht.threekt.cameras.Camera
 import info.laht.threekt.lights.Light
 import info.laht.threekt.materials.Material
+import info.laht.threekt.materials.MaterialProxy
 import info.laht.threekt.math.*
 import info.laht.threekt.objects.Mesh
 import info.laht.threekt.renderers.Renderer
@@ -533,19 +534,7 @@ open class Object3D : Cloneable, EventDispatcher by EventDispatcherImpl() {
     }
 }
 
-interface GeometryObject {
-
-    var geometry: BufferGeometry
-
-}
-
-interface MaterialObject {
-
-    val material: Material
-
-}
-
-interface MaterialsObject : MaterialObject {
+interface MaterialsObject : MaterialProxy {
 
     val isMultiMaterial
         get() = materials.size > 1
@@ -599,7 +588,7 @@ fun Frustum.intersectsObject(`object`: Object3D): Boolean {
 
     val sphere = Sphere()
 
-    `object` as GeometryObject
+    `object` as BufferGeometryProxy
 
     val geometry = `object`.geometry
 

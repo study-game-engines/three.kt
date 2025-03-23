@@ -12,6 +12,10 @@ import info.laht.threekt.renderers.Renderer
 import info.laht.threekt.textures.Texture
 import info.laht.threekt.core.Cloneable as Cloneable1
 
+interface MaterialProxy {
+    val material: Material
+}
+
 open class Material : Cloneable1, EventDispatcher by EventDispatcherImpl() {
 
     /**

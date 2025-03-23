@@ -5,13 +5,14 @@ import info.laht.threekt.materials.LineBasicMaterial
 import info.laht.threekt.math.Vector3
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import info.laht.threekt.materials.MaterialProxy
 
 open class Line @JvmOverloads constructor(
 
     geometry: BufferGeometry? = null,
     material: LineBasicMaterial? = null
 
-) : Object3D(), GeometryObject, MaterialObject {
+) : Object3D(), BufferGeometryProxy, MaterialProxy {
 
     override var geometry = geometry ?: BufferGeometry()
     override var material = material ?: LineBasicMaterial()

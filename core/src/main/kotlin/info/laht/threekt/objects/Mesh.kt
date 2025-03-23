@@ -13,7 +13,7 @@ import kotlin.math.min
 open class Mesh(
         geometry: BufferGeometry? = null,
         materials: MutableList<Material>? = null
-) : Object3D(), GeometryObject, MaterialsObject {
+) : Object3D(), BufferGeometryProxy, MaterialsObject {
 
     var drawMode = DrawMode.Triangles
 

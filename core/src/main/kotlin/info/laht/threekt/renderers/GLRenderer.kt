@@ -493,7 +493,7 @@ class GLRenderer(
 
         scene.traverse { `object` ->
 
-            if (`object` is MaterialObject) {
+            if (`object` is MaterialProxy) {
 
                 if (`object` is MaterialsObject && `object`.isMultiMaterial) {
 
@@ -670,7 +670,7 @@ class GLRenderer(
 
             } else if (`object` is Mesh || `object` is Line || `object` is Points) {
 
-                `object` as MaterialObject
+                `object` as MaterialProxy
 
                 if (!`object`.frustumCulled || frustum.intersectsObject(`object`)) {
 
@@ -964,7 +964,7 @@ class GLRenderer(
 
         textures.resetTextureUnits()
 
-        val vertexAlphas = material.vertexColors == Colors.Vertex && `object` is GeometryObject && `object`.geometry.attributes.color?.itemSize == 4
+        val vertexAlphas = material.vertexColors == Colors.Vertex && `object` is BufferGeometryProxy && `object`.geometry.attributes.color?.itemSize == 4
 
         val materialProperties = properties[material]
         val lights = currentRenderState!!.lights

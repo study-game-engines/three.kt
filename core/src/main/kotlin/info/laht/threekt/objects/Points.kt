@@ -6,12 +6,12 @@ import info.laht.threekt.materials.PointsMaterial
 import info.laht.threekt.math.Matrix4
 import info.laht.threekt.math.Ray
 import info.laht.threekt.math.Sphere
-
+import info.laht.threekt.materials.MaterialProxy
 
 class Points(
     override var geometry: BufferGeometry = BufferGeometry(),
     override var material: Material = PointsMaterial()
-) : Object3D(), GeometryObject, MaterialObject {
+) : Object3D(), BufferGeometryProxy, MaterialProxy {
 
     private val raycastHelper by lazy { RaycastHelper() }
 

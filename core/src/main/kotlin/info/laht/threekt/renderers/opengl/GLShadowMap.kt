@@ -6,7 +6,7 @@ import info.laht.threekt.cameras.Camera
 import info.laht.threekt.cameras.OrthographicCamera
 import info.laht.threekt.cameras.PerspectiveCamera
 //import info.laht.threekt.cameras.CameraWithNearAndFar
-import info.laht.threekt.core.MaterialObject
+import info.laht.threekt.materials.MaterialProxy
 import info.laht.threekt.core.MaterialsObject
 import info.laht.threekt.core.Object3D
 import info.laht.threekt.core.intersectsObject
@@ -256,7 +256,7 @@ class GLShadowMap internal constructor(
 
         if (visible && (`object` is Mesh || `object` is Line || `object` is Points)) {
 
-            `object` as MaterialObject
+            `object` as MaterialProxy
 
             if (`object`.castShadow && (!`object`.frustumCulled || frustum.intersectsObject(`object`))) {
 
