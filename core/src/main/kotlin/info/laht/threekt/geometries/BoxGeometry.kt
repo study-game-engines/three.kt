@@ -66,19 +66,7 @@ class BoxBufferGeometry(
 
         }
 
-        fun buildPlane(
-            u: Int,
-            v: Int,
-            w: Int,
-            udir: Int,
-            vdir: Int,
-            width: Float,
-            height: Float,
-            depth: Float,
-            gridX: Int,
-            gridY: Int,
-            materialIndex: Int
-        ) {
+        fun buildPlane(u: Int, v: Int, w: Int, udir: Int, vdir: Int, width: Float, height: Float, depth: Float, gridX: Int, gridY: Int, materialIndex: Int) {
 
             val segmentWidth = width / gridX
             val segmentHeight = height / gridY

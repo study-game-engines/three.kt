@@ -587,26 +587,26 @@ open class Object3DImpl : Object3D, EventDispatcher by EventDispatcherImpl() {
 
 }
 
-interface GeometryObject : Object3D {
+interface GeometryObject /*: Object3D*/ {
 
     var geometry: BufferGeometry
 
 }
 
-interface MaterialObject : Object3D {
+interface MaterialObject /*: Object3D*/ {
 
     val material: Material
 
 }
 
-interface MaterialsObject : MaterialObject {
+interface MaterialsObject /*: MaterialObject*/ {
 
     val isMultiMaterial
         get() = materials.size > 1
 
     val materials: MutableList<Material>
 
-    override var material: Material
+    /*override*/ var material: Material
         get() {
             return materials.getOrNull(0) ?: throw IllegalStateException("No material set!")
         }

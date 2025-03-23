@@ -3,11 +3,6 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.5.10" apply(false)
 }
 
-wrapper {
-    distributionType = Wrapper.DistributionType.ALL
-    gradleVersion = '6.7'
-}
-
 group = "info.laht.threekt"
 version = "r1-ALPHA-28"
 

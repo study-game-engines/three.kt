@@ -25,7 +25,7 @@ public class JavaExample {
 
             BoxBufferGeometry boxBufferGeometry = new BoxBufferGeometry();
             MeshPhongMaterial boxMaterial = new MeshPhongMaterial();
-            boxMaterial.getColor().set(Color.royalblue);
+            boxMaterial.getColor().set(Color.darkviolet);
 
             Mesh box = new Mesh(boxBufferGeometry, boxMaterial);
             scene.add(box);
@@ -41,14 +41,14 @@ public class JavaExample {
 
             new OrbitControls(camera, window);
 
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                window.close();
-            }).start();
+//            new Thread(() -> {
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                window.close();
+//            }).start();
 
             window.onCloseCallback = () -> {
                 System.out.println("Window closed");

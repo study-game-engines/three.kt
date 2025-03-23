@@ -37,8 +37,6 @@ local.properties
 .settings/
 .loadpath
 
-gradle.properties
-
 .nb-gradle/
 
 .idea/
