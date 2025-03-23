@@ -1,6 +1,9 @@
 package info.laht.threekt.renderers.opengl
 
 import info.laht.threekt.cameras.Camera
+//import info.laht.threekt.cameras.CameraWithNearAndFar
+import info.laht.threekt.cameras.OrthographicCamera
+import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.core.Object3D
 import info.laht.threekt.lights.*
 import info.laht.threekt.math.Color
@@ -165,12 +168,21 @@ internal class GLLights {
                     if (light.castShadow) {
 
                         val shadow = light.shadow
-
+                        when (shadow.camera) {
+                            is PerspectiveCamera -> {
+                                uniforms.shadowCameraNear = shadow.camera.near
+                                uniforms.shadowCameraFar = shadow.camera.far
+                            }
+                            is OrthographicCamera -> {
+                                uniforms.shadowCameraNear = shadow.camera.near
+                                uniforms.shadowCameraFar = shadow.camera.far
+                            }
+                            else -> error("camera: ${shadow.camera}")
+                        }
                         uniforms.shadowBias = shadow.bias
                         uniforms.shadowRadius = shadow.radius
                         uniforms.shadowMapSize = shadow.mapSize
-                        uniforms.shadowCameraNear = shadow.camera.near
-                        uniforms.shadowCameraFar = shadow.camera.far
+
 
                     }
 

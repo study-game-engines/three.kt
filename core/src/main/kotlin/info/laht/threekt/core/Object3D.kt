@@ -599,14 +599,14 @@ interface MaterialObject /*: Object3D*/ {
 
 }
 
-interface MaterialsObject /*: MaterialObject*/ {
+interface MaterialsObject : MaterialObject {
 
     val isMultiMaterial
         get() = materials.size > 1
 
     val materials: MutableList<Material>
 
-    /*override*/ var material: Material
+    override var material: Material
         get() {
             return materials.getOrNull(0) ?: throw IllegalStateException("No material set!")
         }
@@ -616,9 +616,9 @@ interface MaterialsObject /*: MaterialObject*/ {
 
 }
 
-interface MorphTargetInfluencesObject : Object3D {
+open class MorphTargetInfluencesObject : Object3DImpl() {
 
-    val morphTargetInfluences: MutableList<Float>
+    val morphTargetInfluences by lazy { mutableListOf<Float>() }
 
 }
 
@@ -669,7 +669,7 @@ fun Frustum.intersectsObject(`object`: Object3D): Boolean {
     }
 
     sphere.copy(geometry.boundingSphere!!)
-            .applyMatrix4(`object`.matrixWorld)
+        .applyMatrix4(`object`.matrixWorld)
 
     return this.intersectsSphere(sphere)
 

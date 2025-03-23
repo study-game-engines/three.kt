@@ -1,7 +1,7 @@
 package info.laht.threekt.controls
 
 import info.laht.threekt.cameras.Camera
-import info.laht.threekt.cameras.CameraWithZoom
+//import info.laht.threekt.cameras.CameraWithZoom
 import info.laht.threekt.cameras.OrthographicCamera
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.core.EventDispatcher
@@ -15,8 +15,8 @@ import kotlin.math.*
 private const val EPS = 0.000001f
 
 class OrbitControls(
-        private val camera: Camera,
-        private val eventSource: PeripheralsEventSource
+    private val camera: Camera,
+    private val eventSource: PeripheralsEventSource
 ) : EventDispatcher by EventDispatcherImpl() {
 
     // Set to false to disable this control
@@ -74,7 +74,11 @@ class OrbitControls(
     // for reset
     private var target0 = target.clone()
     private var position0 = camera.position.clone()
-    private var zoom0 = (camera as CameraWithZoom).zoom
+    private var zoom0 = when (camera) {
+        is OrthographicCamera -> camera.zoom
+        is PerspectiveCamera -> camera.zoom
+        else -> error("camera: $camera")
+    }
 
     // current position in spherical coordinates
     private val spherical = Spherical()
@@ -126,7 +130,11 @@ class OrbitControls(
 
         this.target0.copy(this.target)
         this.position0.copy(this.camera.position)
-        this.zoom0 = (this.camera as CameraWithZoom).zoom
+        this.zoom0 = when (camera) {
+            is OrthographicCamera -> camera.zoom
+            is PerspectiveCamera -> camera.zoom
+            else -> error("camera: $camera")
+        }
 
     }
 
@@ -134,7 +142,11 @@ class OrbitControls(
 
         this.target.copy(this.target0)
         this.camera.position.copy(this.position0)
-        (this.camera as CameraWithZoom).zoom = this.zoom0
+        when (camera) {
+            is OrthographicCamera -> camera.zoom = zoom0
+            is PerspectiveCamera -> camera.zoom = zoom0
+            else -> error("camera: $camera")
+        }
 
         when (camera) {
             is PerspectiveCamera -> camera.updateProjectionMatrix()
@@ -247,8 +259,8 @@ class OrbitControls(
         // using small-angle approximation cos(x/2) = 1 - x^2 / 8
 
         if (zoomChanged ||
-                lastPosition.distanceToSquared(this.camera.position) > EPS ||
-                8 * (1 - lastQuaternion.dot(this.camera.quaternion)) > EPS
+            lastPosition.distanceToSquared(this.camera.position) > EPS ||
+            8 * (1 - lastQuaternion.dot(this.camera.quaternion)) > EPS
         ) {
 
             this.dispatchEvent("change", this)
@@ -345,12 +357,12 @@ class OrbitControls(
             this.camera is OrthographicCamera -> {
                 // orthographic
                 panLeft(
-                        deltaX * (this.camera.right - this.camera.left) / this.camera.zoom / eventSource.size.width,
-                        this.camera.matrix
+                    deltaX * (this.camera.right - this.camera.left) / this.camera.zoom / eventSource.size.width,
+                    this.camera.matrix
                 )
                 panUp(
-                        deltaY * (this.camera.top - this.camera.bottom) / this.camera.zoom / eventSource.size.height,
-                        this.camera.matrix
+                    deltaY * (this.camera.top - this.camera.bottom) / this.camera.zoom / eventSource.size.height,
+                    this.camera.matrix
                 )
             }
             else -> {
@@ -597,7 +609,7 @@ class OrbitControls(
     }
 
     private inner class MyMouseUpListener(
-            private val moveListener: MyMouseMoveListener
+        private val moveListener: MyMouseMoveListener
     ) : MouseAdapter() {
 
         override fun onMouseUp(button: Int, event: MouseEvent) {

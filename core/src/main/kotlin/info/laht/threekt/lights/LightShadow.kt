@@ -1,7 +1,7 @@
 package info.laht.threekt.lights
 
 import info.laht.threekt.cameras.Camera
-import info.laht.threekt.cameras.CameraWithNearAndFar
+//import info.laht.threekt.cameras.CameraWithNearAndFar
 import info.laht.threekt.cameras.OrthographicCamera
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.core.Cloneable
@@ -9,7 +9,7 @@ import info.laht.threekt.math.*
 import info.laht.threekt.renderers.RenderTarget
 
 open class LightShadow(
-        val camera: CameraWithNearAndFar
+        val camera: Camera
 ) : Cloneable {
 
     var bias = 0f

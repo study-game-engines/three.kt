@@ -2,8 +2,10 @@ package info.laht.threekt.renderers.opengl
 
 import info.laht.threekt.*
 import info.laht.threekt.cameras.Camera
-import info.laht.threekt.cameras.CameraCanUpdateProjectionMatrix
-import info.laht.threekt.cameras.CameraWithNearAndFar
+//import info.laht.threekt.cameras.CameraCanUpdateProjectionMatrix
+import info.laht.threekt.cameras.OrthographicCamera
+import info.laht.threekt.cameras.PerspectiveCamera
+//import info.laht.threekt.cameras.CameraWithNearAndFar
 import info.laht.threekt.core.MaterialObject
 import info.laht.threekt.core.MaterialsObject
 import info.laht.threekt.core.Object3D
@@ -133,7 +135,11 @@ class GLShadowMap internal constructor(
                     )
                     ).apply {
                         texture.name = light.name + ".shadowMap"
-                        (camera as CameraCanUpdateProjectionMatrix).updateProjectionMatrix()
+                        when (camera) {
+                            is OrthographicCamera -> camera.updateProjectionMatrix()
+                            is PerspectiveCamera -> camera.updateProjectionMatrix()
+                            else -> error("camera: $camera")
+                        }
                     }
 
                 }
@@ -152,7 +158,7 @@ class GLShadowMap internal constructor(
 
                     state.viewport(this.viewport)
 
-                    shadow.updateMatrices(light, camera as CameraWithNearAndFar, vp)
+                    shadow.updateMatrices(light, camera, vp)
 
                     frustum.copy(shadow.frustum)
 
@@ -241,7 +247,7 @@ class GLShadowMap internal constructor(
     private fun renderObject(
             `object`: Object3D,
             camera: Camera,
-            shadowCamera: CameraWithNearAndFar,
+            shadowCamera: Camera,
             light: Light
     ) {
         if (!`object`.visible) return
@@ -270,13 +276,11 @@ class GLShadowMap internal constructor(
 
                         if (groupMaterial != null && groupMaterial.visible) {
 
-                            val depthMaterial = getDepthMaterial(
-                                    `object`,
-                                    groupMaterial,
-                                    light,
-                                    shadowCamera.near,
-                                    shadowCamera.far
-                            )
+                            val depthMaterial = when(shadowCamera) {
+                                is OrthographicCamera -> getDepthMaterial(`object`, groupMaterial, light, shadowCamera.near, shadowCamera.far)
+                                is PerspectiveCamera -> getDepthMaterial(`object`, groupMaterial, light, shadowCamera.near, shadowCamera.far)
+                                else -> error("shadowCamera: $shadowCamera")
+                            }
                             renderer.renderBufferDirect(shadowCamera, null, geometry, depthMaterial, `object`, group)
 
                         }
@@ -285,13 +289,11 @@ class GLShadowMap internal constructor(
 
                 } else if (`object`.material.visible) {
 
-                    val depthMaterial = getDepthMaterial(
-                            `object`,
-                            `object`.material,
-                            light,
-                            shadowCamera.near,
-                            shadowCamera.far
-                    )
+                    val depthMaterial = when(shadowCamera) {
+                        is OrthographicCamera -> getDepthMaterial(`object`, `object`.material, light, shadowCamera.near, shadowCamera.far)
+                        is PerspectiveCamera -> getDepthMaterial(`object`, `object`.material, light, shadowCamera.near, shadowCamera.far)
+                        else -> error("shadowCamera: $shadowCamera")
+                    }
                     renderer.renderBufferDirect(shadowCamera, null, geometry, depthMaterial, `object`, null)
 
                 }

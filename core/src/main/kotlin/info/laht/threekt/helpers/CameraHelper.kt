@@ -1,10 +1,8 @@
 package info.laht.threekt.helpers
 
 import info.laht.threekt.Colors
-import info.laht.threekt.cameras.AbstractCamera
-import info.laht.threekt.cameras.Camera
-import info.laht.threekt.cameras.CameraCanUpdateProjectionMatrix
-import info.laht.threekt.cameras.unproject
+import info.laht.threekt.cameras.*
+//import info.laht.threekt.cameras.CameraCanUpdateProjectionMatrix
 import info.laht.threekt.core.BufferGeometry
 import info.laht.threekt.core.FloatBufferAttribute
 import info.laht.threekt.materials.LineBasicMaterial
@@ -104,8 +102,9 @@ class CameraHelper(
         geometry.addAttribute("position", FloatBufferAttribute(vertices.toFloatArray(), 3))
         geometry.addAttribute("color", FloatBufferAttribute(colors.toFloatArray(), 3))
 
-        if (camera is CameraCanUpdateProjectionMatrix) {
-            camera.updateProjectionMatrix()
+        when (camera) {
+            is OrthographicCamera -> camera.updateProjectionMatrix()
+            is PerspectiveCamera -> camera.updateProjectionMatrix()
         }
 
         this.matrix = camera.matrixWorld

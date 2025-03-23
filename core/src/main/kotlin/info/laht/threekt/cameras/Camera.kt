@@ -62,27 +62,6 @@ open class AbstractCamera : Camera, Object3DImpl() {
 
 }
 
-
-interface CameraWithZoom : Camera {
-
-    var zoom: Float
-
-}
-
-interface CameraWithNearAndFar : Camera {
-
-    var near: Float
-    var far: Float
-
-}
-
-interface CameraCanUpdateProjectionMatrix : Camera {
-
-    fun updateProjectionMatrix()
-
-}
-
-
 fun Vector3.project(camera: Camera): Vector3 {
     return this.applyMatrix4(camera.matrixWorldInverse).applyMatrix4(camera.projectionMatrix)
 }

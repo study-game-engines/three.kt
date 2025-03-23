@@ -5,11 +5,11 @@ class OrthographicCamera(
     var right: Float = 1f,
     var top: Float = 1f,
     var bottom: Float = -1f,
-    override var near: Float = 0.1f,
-    override var far: Float = 2000f
-) : AbstractCamera(), CameraWithZoom, CameraWithNearAndFar, CameraCanUpdateProjectionMatrix {
+    var near: Float = 0.1f,
+    var far: Float = 2000f
+) : AbstractCamera() {
 
-    override var zoom: Float = 1f
+    var zoom: Float = 1f
 
     private var view: View? = null
 
@@ -54,7 +54,7 @@ class OrthographicCamera(
         this.updateProjectionMatrix()
     }
 
-    override fun updateProjectionMatrix() {
+    fun updateProjectionMatrix() {
         val dx = (this.right - this.left) / (2 * this.zoom)
         val dy = (this.top - this.bottom) / (2 * this.zoom)
         val cx = (this.right + this.left) / 2

@@ -13,14 +13,14 @@ import kotlin.math.min
 open class Mesh(
         geometry: BufferGeometry? = null,
         materials: MutableList<Material>? = null
-) : Object3DImpl(), GeometryObject, MaterialsObject, MorphTargetInfluencesObject {
+) : /*Object3DImpl(), */GeometryObject, MaterialsObject, MorphTargetInfluencesObject() {
 
     var drawMode = DrawMode.Triangles
 
     override var geometry: BufferGeometry = geometry ?: BufferGeometry()
     override val materials = materials ?: mutableListOf(MeshBasicMaterial() as Material)
 
-    override val morphTargetInfluences by lazy { mutableListOf<Float>() }
+//    override val morphTargetInfluences by lazy { mutableListOf<Float>() }
     val morphTargetDictionary by lazy { mutableMapOf<String, Int>() }
 
     private val raycastHelper by lazy { RaycastHelper() }
@@ -336,7 +336,7 @@ open class Mesh(
 
     fun copy(source: Mesh): Mesh {
 
-        super<Object3DImpl>.copy(source, true)
+        super.copy(source, true)
 
         this.drawMode = source.drawMode
         this.material.copy(source.material)
