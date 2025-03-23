@@ -562,9 +562,9 @@ interface MaterialsObject : MaterialObject {
 
 }
 
-open class MorphTargetInfluencesObject : Object3D() {
+interface MorphTargetInfluencesObject {
 
-    val morphTargetInfluences by lazy { mutableListOf<Float>() }
+    val morphTargetInfluences: List<Float>
 
 }
 

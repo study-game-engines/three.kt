@@ -13,10 +13,11 @@ import kotlin.math.min
 open class Mesh(
         geometry: BufferGeometry? = null,
         materials: MutableList<Material>? = null
-) : GeometryObject, MaterialsObject, MorphTargetInfluencesObject() {
+) : Object3D(), GeometryObject, MaterialsObject, MorphTargetInfluencesObject {
 
     var drawMode = DrawMode.Triangles
 
+    override val morphTargetInfluences by lazy { mutableListOf<Float>() }
     override var geometry: BufferGeometry = geometry ?: BufferGeometry()
     override val materials = materials ?: mutableListOf(MeshBasicMaterial() as Material)
 
