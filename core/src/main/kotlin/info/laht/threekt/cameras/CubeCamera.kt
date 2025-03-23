@@ -2,7 +2,7 @@ package info.laht.threekt.cameras
 
 import info.laht.threekt.TextureFilter
 import info.laht.threekt.TextureFormat
-import info.laht.threekt.core.Object3DImpl
+import info.laht.threekt.core.Object3D
 import info.laht.threekt.math.Vector3
 import info.laht.threekt.renderers.GLRenderTarget
 import info.laht.threekt.renderers.GLRenderTargetCube
@@ -17,7 +17,7 @@ class CubeCamera(
     far: Float,
     cubeResolution: Int,
     options: GLRenderTarget.Options? = null
-) : Object3DImpl() {
+) : Object3D() {
 
     var renderTarget: GLRenderTargetCube
 

@@ -11,7 +11,7 @@ open class Line @JvmOverloads constructor(
     geometry: BufferGeometry? = null,
     material: LineBasicMaterial? = null
 
-) : Object3DImpl(), GeometryObject, MaterialObject {
+) : Object3D(), GeometryObject, MaterialObject {
 
     override var geometry = geometry ?: BufferGeometry()
     override var material = material ?: LineBasicMaterial()
@@ -51,7 +51,7 @@ open class Line @JvmOverloads constructor(
     }
 
     fun copy(source: Line): Line {
-        super<Object3DImpl>.copy(source, false)
+        super.copy(source, false)
 
         this.geometry.copy(source.geometry)
         this.material.copy(source.material)

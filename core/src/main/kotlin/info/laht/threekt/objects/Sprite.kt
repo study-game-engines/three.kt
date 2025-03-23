@@ -8,7 +8,7 @@ import info.laht.threekt.math.Vector2
 
 class Sprite(
     override var material: SpriteMaterial = SpriteMaterial()
-) : Object3DImpl(), GeometryObject, MaterialObject {
+) : Object3D(), GeometryObject, MaterialObject {
 
     override var geometry = BufferGeometry()
 

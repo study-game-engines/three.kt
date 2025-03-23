@@ -2,7 +2,7 @@ package info.laht.threekt.helpers
 
 import info.laht.threekt.core.BufferGeometry
 import info.laht.threekt.core.FloatBufferAttribute
-import info.laht.threekt.core.Object3DImpl
+import info.laht.threekt.core.Object3D
 import info.laht.threekt.geometries.CylinderBufferGeometry
 import info.laht.threekt.materials.LineBasicMaterial
 import info.laht.threekt.materials.MaterialWithColor
@@ -20,7 +20,7 @@ class ArrowHelper(
         color: Int = 0xffff00,
         headLength: Float = 0.2f * length,
         headWidth: Float = 0.4f * headLength
-) : Object3DImpl() {
+) : Object3D() {
 
     val line: Line
     val cone: Mesh

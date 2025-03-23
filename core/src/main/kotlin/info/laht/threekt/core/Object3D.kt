@@ -8,52 +8,60 @@ import info.laht.threekt.objects.Mesh
 import info.laht.threekt.renderers.Renderer
 import info.laht.threekt.scenes.Scene
 
+open class Object3D : Cloneable, EventDispatcher by EventDispatcherImpl() {
 
-interface Object3D : Cloneable, EventDispatcher {
+    var name = ""
+    val uuid = generateUUID()
+    val id = Object3D.getAndIncrementObject3dId()
 
-    var name: String
-    val uuid: String
-    val id: Int
+    var parent: Object3D? = null
+    val children = mutableListOf<Object3D>()
 
-    var parent: Object3D?
-    val children: MutableList<Object3D>
+    var up = Object3D.defaultUp.clone()
 
-    var up: Vector3
+    val position = Vector3()
+    val rotation = Euler().also {
+        it.onChangeCallback = { onRotationChange() }
+    }
+    val quaternion = Quaternion().also {
+        it.onChangeCallback = { onQuaternionChange() }
+    }
+    val scale = Vector3(1f, 1f, 1f)
 
-    val position: Vector3
-    val rotation: Euler
-    val quaternion: Quaternion
-    val scale: Vector3
+    val modelViewMatrix = Matrix4()
+    val normalMatrix = Matrix3()
 
-    val modelViewMatrix: Matrix4
-    val normalMatrix: Matrix3
+    var matrix = Matrix4()
+        protected set
+    val matrixWorld = Matrix4()
 
-    val matrix: Matrix4
-    val matrixWorld: Matrix4
+    var matrixAutoUpdate = true
+    var matrixWorldNeedsUpdate = true
 
-    var matrixAutoUpdate: Boolean
-    var matrixWorldNeedsUpdate: Boolean
+    val layers = Layers()
+    var visible = true
 
-    val layers: Layers
-    var visible: Boolean
+    var castShadow = false
+    var receiveShadow = false
 
-    var castShadow: Boolean
-    var receiveShadow: Boolean
+    var frustumCulled = true
+    var renderOrder = 0
 
-    var frustumCulled: Boolean
-    var renderOrder: Int
+    var onBeforeRender: ((Renderer, Scene, Camera, BufferGeometry, Material, GeometryGroup?) -> Unit)? = null
+    var onAfterRender: ((Renderer, Scene, Camera, BufferGeometry, Material, GeometryGroup?) -> Unit)? = null
 
-    var onBeforeRender: ((Renderer, Scene, Camera, BufferGeometry, Material, GeometryGroup?) -> Unit)?
-    var onAfterRender: ((Renderer, Scene, Camera, BufferGeometry, Material, GeometryGroup?) -> Unit)?
+    val userData by lazy { mutableMapOf<String, Any>() }
 
-    val userData: MutableMap<String, Any>
-
-    private fun onRotationChange() {
+    fun onRotationChange() {
         quaternion.setFromEuler(rotation, false)
     }
 
-    private fun onQuaternionChange() {
+    fun onQuaternionChange() {
         rotation.setFromQuaternion(quaternion, null, false)
+    }
+
+    override fun clone(): Object3D {
+        return Object3D().copy(this, true)
     }
 
     /**
@@ -376,7 +384,7 @@ interface Object3D : Cloneable, EventDispatcher {
         return target
     }
 
-    fun getWorldDirection(target: Vector3): Vector3 {
+    open fun getWorldDirection(target: Vector3): Vector3 {
         this.updateMatrixWorld(true)
 
         val e = this.matrixWorld.elements
@@ -384,13 +392,13 @@ interface Object3D : Cloneable, EventDispatcher {
         return target.set(e[8], e[9], e[10]).normalize()
     }
 
-    fun raycast(raycaster: Raycaster, intersects: MutableList<Intersection>) {
+    open fun raycast(raycaster: Raycaster, intersects: MutableList<Intersection>) {
         TODO("Should be overriden by subclass")
     }
 
     fun traverse(callback: (Object3D) -> Unit) {
         callback(this)
-        children.forEach {child ->
+        children.forEach { child ->
             child.traverse(callback)
         }
     }
@@ -423,7 +431,7 @@ interface Object3D : Cloneable, EventDispatcher {
     /**
      * Updates global transform of the object and its children.
      */
-    fun updateMatrixWorld(force: Boolean = false) {
+    open fun updateMatrixWorld(force: Boolean = false) {
 
         if (this.matrixAutoUpdate) {
             this.updateMatrix()
@@ -511,8 +519,6 @@ interface Object3D : Cloneable, EventDispatcher {
         return this
     }
 
-    override fun clone(): Object3D
-
     companion object {
 
         private var object3DId = 0
@@ -527,73 +533,13 @@ interface Object3D : Cloneable, EventDispatcher {
     }
 }
 
-open class Object3DImpl : Object3D, EventDispatcher by EventDispatcherImpl() {
-
-    override var name = ""
-    override val uuid = generateUUID()
-    override val id = Object3D.getAndIncrementObject3dId()
-
-    override var parent: Object3D? = null
-    override val children = mutableListOf<Object3D>()
-
-    override var up = Object3D.defaultUp.clone()
-
-    override val position = Vector3()
-    override val rotation = Euler().also {
-        it.onChangeCallback = { onRotationChange() }
-    }
-    override val quaternion = Quaternion().also {
-        it.onChangeCallback = { onQuaternionChange() }
-    }
-    override val scale = Vector3(1f, 1f, 1f)
-
-    override val modelViewMatrix = Matrix4()
-    override val normalMatrix = Matrix3()
-
-    override var matrix = Matrix4()
-        protected set
-    override val matrixWorld = Matrix4()
-
-    override var matrixAutoUpdate = true
-    override var matrixWorldNeedsUpdate = true
-
-    override val layers = Layers()
-    override var visible = true
-
-    override var castShadow = false
-    override var receiveShadow = false
-
-    override var frustumCulled = true
-    override var renderOrder = 0
-
-    override var onBeforeRender: ((Renderer, Scene, Camera, BufferGeometry, Material, GeometryGroup?) -> Unit)? = null
-    override var onAfterRender: ((Renderer, Scene, Camera, BufferGeometry, Material, GeometryGroup?) -> Unit)? = null
-
-    override val userData by lazy { mutableMapOf<String, Any>() }
-
-    private fun onRotationChange() {
-        quaternion.setFromEuler(rotation, false)
-    }
-
-    private fun onQuaternionChange() {
-        rotation.setFromQuaternion(quaternion, null, false)
-    }
-
-    override fun clone(): Object3DImpl {
-        return Object3DImpl().apply {
-            copy(this, true)
-        }
-    }
-
-}
-
-interface GeometryObject /*: Object3D*/ {
+interface GeometryObject {
 
     var geometry: BufferGeometry
 
 }
 
-interface MaterialObject /*: Object3D*/ {
+interface MaterialObject {
 
     val material: Material
 
@@ -616,7 +562,7 @@ interface MaterialsObject : MaterialObject {
 
 }
 
-open class MorphTargetInfluencesObject : Object3DImpl() {
+open class MorphTargetInfluencesObject : Object3D() {
 
     val morphTargetInfluences by lazy { mutableListOf<Float>() }
 

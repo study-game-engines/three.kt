@@ -4,7 +4,7 @@ import info.laht.threekt.Window
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.controls.OrbitControls
 import info.laht.threekt.core.Clock
-import info.laht.threekt.core.Object3DImpl
+import info.laht.threekt.core.Object3D
 import info.laht.threekt.geometries.SphereBufferGeometry
 import info.laht.threekt.helpers.DirectionalLightHelper
 import info.laht.threekt.lights.DirectionalLight
@@ -36,7 +36,7 @@ fun main() {
             scene.add(light)
         }
 
-        val parent = Object3DImpl()
+        val parent = Object3D()
         scene.add(parent)
         val geometry = SphereBufferGeometry(0.5f)
 

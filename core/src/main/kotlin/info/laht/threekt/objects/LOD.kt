@@ -3,12 +3,11 @@ package info.laht.threekt.objects
 import info.laht.threekt.cameras.Camera
 import info.laht.threekt.core.Intersection
 import info.laht.threekt.core.Object3D
-import info.laht.threekt.core.Object3DImpl
 import info.laht.threekt.core.Raycaster
 import info.laht.threekt.math.Vector3
 import kotlin.math.abs
 
-class LOD : Object3DImpl() {
+class LOD : Object3D() {
 
     private val levels = mutableListOf<Level>()
 
@@ -117,8 +116,8 @@ class LOD : Object3DImpl() {
     }
 
     class Level(
-            val `object`: Object3D,
-            val distance: Float
+        val `object`: Object3D,
+        val distance: Float
     ) {
 
         fun clone(): Level {

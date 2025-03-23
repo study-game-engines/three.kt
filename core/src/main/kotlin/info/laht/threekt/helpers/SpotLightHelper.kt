@@ -2,7 +2,7 @@ package info.laht.threekt.helpers
 
 import info.laht.threekt.core.BufferGeometry
 import info.laht.threekt.core.FloatBufferAttribute
-import info.laht.threekt.core.Object3DImpl
+import info.laht.threekt.core.Object3D
 import info.laht.threekt.lights.SpotLight
 import info.laht.threekt.materials.LineBasicMaterial
 import info.laht.threekt.math.Color
@@ -16,7 +16,7 @@ import kotlin.math.tan
 class SpotLightHelper(
     val light: SpotLight,
     val color: Color? = null
-) : Object3DImpl() {
+) : Object3D() {
 
     private val tmpVector = Vector3()
 

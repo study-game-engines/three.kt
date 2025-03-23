@@ -1,10 +1,10 @@
 package info.laht.threekt.cameras
 
-import info.laht.threekt.core.Object3DImpl
+import info.laht.threekt.core.Object3D
 import info.laht.threekt.math.Matrix4
 import info.laht.threekt.math.Vector3
 
-open class Camera : Object3DImpl() {
+open class Camera : Object3D() {
 
     val matrixWorldInverse = Matrix4()
 

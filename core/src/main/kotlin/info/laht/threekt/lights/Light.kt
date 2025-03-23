@@ -2,7 +2,6 @@ package info.laht.threekt.lights
 
 import info.laht.threekt.core.Intersection
 import info.laht.threekt.core.Object3D
-import info.laht.threekt.core.Object3DImpl
 import info.laht.threekt.core.Raycaster
 import info.laht.threekt.math.Color
 import info.laht.threekt.math.SphericalHarmonics3
@@ -21,7 +20,7 @@ interface LightWithTarget {
 sealed class Light(
         color: Color? = null,
         intensity: Number? = null
-) : Object3DImpl() {
+) : Object3D() {
 
     val color = color ?: Color(0xffffff)
     var intensity = intensity?.toFloat() ?: DEFAULT_INTENSITY
@@ -80,7 +79,7 @@ class DirectionalLight(
 
     constructor(color: Int, intensity: Number? = null) : this(Color(color), intensity)
 
-    override var target = Object3DImpl()
+    override var target = Object3D()
 
     override var shadow = DirectionalLightShadow()
 
@@ -171,7 +170,7 @@ class SpotLight(
     var penumbra = penumbra?.toFloat() ?: 0f
     var decay = decay?.toFloat() ?: 1f
 
-    override var target = Object3DImpl()
+    override var target = Object3D()
     override var shadow = SpotLightShadow()
 
     constructor(color: Int, intensity: Number? = null,

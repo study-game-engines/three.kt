@@ -16,7 +16,10 @@ class InstancedMesh(
 
     val instanceMatrix: FloatBufferAttribute = FloatBufferAttribute(FloatArray(count * 16), 16)
     var instanceColor: FloatBufferAttribute? = null
-    override var frustumCulled = false
+
+    init {
+        frustumCulled = false
+    }
 
     fun copy(source: InstancedMesh): InstancedMesh {
         super.copy(source)
