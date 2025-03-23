@@ -562,13 +562,6 @@ interface MaterialsObject : MaterialObject {
 
 }
 
-interface MorphTargetInfluencesObject {
-
-    val morphTargetInfluences: List<Float>
-
-}
-
-
 fun Box3.setFromObject(`object`: Object3D): Box3 {
     this.makeEmpty()
 
