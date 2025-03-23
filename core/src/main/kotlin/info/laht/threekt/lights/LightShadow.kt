@@ -1,7 +1,6 @@
 package info.laht.threekt.lights
 
 import info.laht.threekt.cameras.Camera
-//import info.laht.threekt.cameras.CameraWithNearAndFar
 import info.laht.threekt.cameras.OrthographicCamera
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.core.Cloneable
@@ -39,9 +38,13 @@ open class LightShadow(
         lightPositionWorld.setFromMatrixPosition(light.matrixWorld)
         camera.position.copy(lightPositionWorld)
 
-        light as LightWithTarget
+        val target = when(light) {
+            is DirectionalLight -> light.target
+            is SpotLight -> light.target
+            else -> error("light: $light")
+        }
 
-        lookTarget.setFromMatrixPosition(light.target.matrixWorld)
+        lookTarget.setFromMatrixPosition(target.matrixWorld)
         camera.lookAt(lookTarget)
         camera.updateMatrixWorld()
 

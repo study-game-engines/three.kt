@@ -9,18 +9,7 @@ import kotlin.math.PI
 
 private const val DEFAULT_INTENSITY = 1f
 
-interface LightWithShadow {
-    val shadow: LightShadow
-}
-
-interface LightWithTarget {
-    val target: Object3D
-}
-
-sealed class Light(
-        color: Color? = null,
-        intensity: Number? = null
-) : Object3D() {
+sealed class Light(color: Color? = null, intensity: Number? = null) : Object3D() {
 
     val color = color ?: Color(0xffffff)
     var intensity = intensity?.toFloat() ?: DEFAULT_INTENSITY
@@ -75,13 +64,13 @@ internal class LightProbe(
 class DirectionalLight(
         color: Color? = null,
         intensity: Number? = null
-) : Light(color, intensity), LightWithShadow, LightWithTarget {
+) : Light(color, intensity) {
 
     constructor(color: Int, intensity: Number? = null) : this(Color(color), intensity)
 
-    override var target = Object3D()
+    var target = Object3D()
 
-    override var shadow = DirectionalLightShadow()
+    var shadow = DirectionalLightShadow()
 
     init {
 
@@ -97,12 +86,12 @@ class PointLight(
         intensity: Number? = null,
         distance: Number? = null,
         decay: Number? = null
-) : Light(color, intensity), LightWithShadow {
+) : Light(color, intensity) {
 
     var distance = distance?.toFloat() ?: 0f
     var decay = decay?.toFloat() ?: 1f
 
-    override val shadow = PointLightShadow()
+    val shadow = PointLightShadow()
 
     constructor(
             color: Int,
@@ -163,15 +152,15 @@ class SpotLight(
         angle: Number? = null,
         penumbra: Number? = null,
         decay: Number? = null
-) : Light(color, intensity), LightWithShadow, LightWithTarget {
+) : Light(color, intensity) {
 
     var distance = distance?.toFloat() ?: 0f
     var angle = angle?.toFloat() ?: (PI / 3).toFloat()
     var penumbra = penumbra?.toFloat() ?: 0f
     var decay = decay?.toFloat() ?: 1f
 
-    override var target = Object3D()
-    override var shadow = SpotLightShadow()
+    var target = Object3D()
+    var shadow = SpotLightShadow()
 
     constructor(color: Int, intensity: Number? = null,
                 distance: Number? = null,

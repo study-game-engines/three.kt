@@ -10,8 +10,7 @@ import info.laht.threekt.materials.MaterialProxy
 import info.laht.threekt.core.MaterialsObject
 import info.laht.threekt.core.Object3D
 import info.laht.threekt.core.intersectsObject
-import info.laht.threekt.lights.Light
-import info.laht.threekt.lights.LightWithShadow
+import info.laht.threekt.lights.*
 import info.laht.threekt.materials.Material
 import info.laht.threekt.materials.MeshDistanceMaterial
 import info.laht.threekt.math.Frustum
@@ -100,9 +99,14 @@ class GLShadowMap internal constructor(
 
         lights.forEach { light ->
 
-            if (light is LightWithShadow) {
+            val shadow = when (light) {
+                is PointLight -> light.shadow
+                is DirectionalLight -> light.shadow
+                is SpotLight -> light.shadow
+                else -> null
+            }
 
-                val shadow = light.shadow
+            if (shadow != null) {
 
                 shadowMapSize.copy(shadow.mapSize)
 

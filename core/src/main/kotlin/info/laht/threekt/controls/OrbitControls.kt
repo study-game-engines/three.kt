@@ -1,7 +1,6 @@
 package info.laht.threekt.controls
 
 import info.laht.threekt.cameras.Camera
-//import info.laht.threekt.cameras.CameraWithZoom
 import info.laht.threekt.cameras.OrthographicCamera
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.core.EventDispatcher

@@ -46,9 +46,12 @@ internal class GLLights {
             val color = light.color
             val intensity = light.intensity
 
-            val shadowMap = if (light is LightWithShadow && light.shadow.map != null) {
-                light.shadow.map!!.texture
-            } else null
+            val shadowMap = when (light) {
+                is PointLight -> light.shadow.map?.texture
+                is DirectionalLight -> light.shadow.map?.texture
+                is SpotLight -> light.shadow.map?.texture
+                else -> null
+            }
 
             when (light) {
                 is AmbientLight -> {
@@ -195,16 +198,16 @@ internal class GLLights {
                 is HemisphereLight -> {
                     val uniforms = cache[light] as HemisphereLightUniforms
 
-                    uniforms.direction.setFromMatrixPosition( light.matrixWorld )
-                    uniforms.direction.transformDirection( viewMatrix )
+                    uniforms.direction.setFromMatrixPosition(light.matrixWorld)
+                    uniforms.direction.transformDirection(viewMatrix)
                     uniforms.direction.normalize()
 
-                    uniforms.skyColor.copy( light.color ).multiplyScalar( intensity )
-                    uniforms.groundColor.copy( light.groundColor ).multiplyScalar( intensity )
+                    uniforms.skyColor.copy(light.color).multiplyScalar(intensity)
+                    uniforms.groundColor.copy(light.groundColor).multiplyScalar(intensity)
 
                     state.hemi.safeSet(hemiLength, uniforms)
 
-                    hemiLength ++
+                    hemiLength++
                 }
             }
 

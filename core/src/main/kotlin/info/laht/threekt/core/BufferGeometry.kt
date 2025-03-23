@@ -8,9 +8,7 @@ import kotlin.math.min
 import kotlin.math.sqrt
 
 interface BufferGeometryProxy {
-
-    var geometry: BufferGeometry
-
+    val geometry: BufferGeometry
 }
 
 open class BufferGeometry : Cloneable, EventDispatcher by EventDispatcherImpl() {
