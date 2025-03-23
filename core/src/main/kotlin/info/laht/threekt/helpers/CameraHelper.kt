@@ -117,7 +117,7 @@ class CameraHelper(
     fun update() {
 
         val vector = Vector3()
-        val camera = AbstractCamera()
+        val camera = Camera()
 
         val position = geometry.getAttribute("position") as FloatBufferAttribute
 

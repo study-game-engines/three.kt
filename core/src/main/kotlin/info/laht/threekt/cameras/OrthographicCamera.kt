@@ -7,7 +7,7 @@ class OrthographicCamera(
     var bottom: Float = -1f,
     var near: Float = 0.1f,
     var far: Float = 2000f
-) : AbstractCamera() {
+) : Camera() {
 
     var zoom: Float = 1f
 
@@ -95,7 +95,7 @@ class OrthographicCamera(
 
     fun copy(source: OrthographicCamera): OrthographicCamera {
 
-        super<AbstractCamera>.copy(source, true)
+        super.copy(source, true)
 
         this.left = source.left
         this.right = source.right

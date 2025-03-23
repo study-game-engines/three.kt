@@ -1,16 +1,16 @@
 package info.laht.threekt.cameras
 
-import info.laht.threekt.core.Object3D
 import info.laht.threekt.core.Object3DImpl
 import info.laht.threekt.math.Matrix4
 import info.laht.threekt.math.Vector3
 
-interface Camera : Object3D {
+open class Camera : Object3DImpl() {
 
-    val matrixWorldInverse: Matrix4
+    val matrixWorldInverse = Matrix4()
 
-    val projectionMatrix: Matrix4
-    val projectionMatrixInverse: Matrix4
+    val projectionMatrix = Matrix4()
+    val projectionMatrixInverse = Matrix4()
+
 
     override fun getWorldDirection(target: Vector3): Vector3 {
 
@@ -43,21 +43,8 @@ interface Camera : Object3D {
 
     }
 
-    override fun clone(): Camera
-
-}
-
-open class AbstractCamera : Camera, Object3DImpl() {
-
-    override val matrixWorldInverse = Matrix4()
-
-    override val projectionMatrix = Matrix4()
-    override val projectionMatrixInverse = Matrix4()
-
-    override fun clone(): AbstractCamera {
-        return AbstractCamera().apply {
-            copy(this, true)
-        }
+    override fun clone(): Camera {
+        return Camera().copy(this, true)
     }
 
 }
